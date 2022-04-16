@@ -26,4 +26,17 @@ class GithubStarsRepository @Inject constructor(@ApplicationContext context: Con
         val api = retrofit.create(SearchUsersAPI::class.java)
         return api.getUsers(page, per_page)
     }
+
+    suspend fun insertLocalUser(userItem: UserItem) {
+        db.localUserDao().insert(userItem)
+    }
+
+    suspend fun deleteLocalUser(userItem:UserItem){
+        db.localUserDao().delete(userItem)
+    }
+
+    suspend fun getAllUsers():List<UserItem>
+    {
+        return db.localUserDao().getAll()
+    }
 }
