@@ -3,7 +3,7 @@ package com.example.githubstars.model.dto
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity
+@Entity(tableName = "users")
 data class UserItem(
     @PrimaryKey val id: Int = 0,
     val avatar_url: String,

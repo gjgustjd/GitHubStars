@@ -1,18 +1,25 @@
 package com.example.githubstars.model
 
+import android.content.Context
 import com.example.githubstars.model.dto.SearchUserResponse
 import com.example.githubstars.model.dto.UserItem
+import com.example.githubstars.model.local.LocalUserDatabase
 import com.google.gson.GsonBuilder
+import dagger.hilt.android.qualifiers.ApplicationContext
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Inject
 
-class GithubStarsRepository {
+class GithubStarsRepository @Inject constructor(@ApplicationContext context: Context) {
 
-    fun getUsersList(page: Int = 1, per_page: Int = 100): Response<SearchUserResponse>{
-        var gson = GsonBuilder().setLenient().create()
+    @Inject
+    private lateinit var db: LocalUserDatabase
 
-        var retrofit = Retrofit.Builder()
+    suspend fun getUsersList(page: Int = 1, per_page: Int = 100): Response<SearchUserResponse> {
+        val gson = GsonBuilder().setLenient().create()
+
+        val retrofit = Retrofit.Builder()
             .baseUrl("https://developer.github.com/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
