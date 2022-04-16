@@ -1,6 +1,11 @@
 package com.example.githubstars.model.dto
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "users")
 data class UserItem(
+    @PrimaryKey val id: Int = 0,
     val avatar_url: String,
     val events_url: String,
     val followers_url: String,
@@ -8,7 +13,6 @@ data class UserItem(
     val gists_url: String,
     val gravatar_id: String,
     val html_url: String,
-    val id: Int,
     val login: String,
     val node_id: String,
     val organizations_url: String,
@@ -20,4 +24,5 @@ data class UserItem(
     val subscriptions_url: String,
     val type: String,
     val url: String
-)
+) {
+}
