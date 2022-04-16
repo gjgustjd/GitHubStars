@@ -7,7 +7,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class GithubStarsRepository {
+object GithubStarsRepository {
 
     fun getUsersList(page: Int = 1, per_page: Int = 100): Response<SearchUserResponse>{
         var gson = GsonBuilder().setLenient().create()

@@ -1,4 +1,4 @@
-package com.example.githubstars
+package com.example.githubstars.Activity
 
 import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
