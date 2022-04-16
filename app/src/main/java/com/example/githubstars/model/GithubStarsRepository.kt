@@ -14,29 +14,32 @@ import javax.inject.Inject
 class GithubStarsRepository @Inject constructor(@ApplicationContext context: Context) {
 
     @Inject
-    private lateinit var db: LocalUserDatabase
+    lateinit var db: LocalUserDatabase
 
-    suspend fun getUsersList(page: Int = 1, per_page: Int = 100): Response<SearchUserResponse> {
+    suspend fun getUsersList(
+        search_string: String="d",
+        page: Int = 1,
+        per_page: Int = 100
+    ): Response<SearchUserResponse> {
         val gson = GsonBuilder().setLenient().create()
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://developer.github.com/")
+            .baseUrl("https://api.github.com/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
         val api = retrofit.create(SearchUsersAPI::class.java)
-        return api.getUsers(page, per_page)
+        return api.getUsers(search_string, page, per_page)
     }
 
     suspend fun insertLocalUser(userItem: UserItem) {
         db.localUserDao().insert(userItem)
     }
 
-    suspend fun deleteLocalUser(userItem:UserItem){
+    suspend fun deleteLocalUser(userItem: UserItem) {
         db.localUserDao().delete(userItem)
     }
 
-    suspend fun getAllUsers():List<UserItem>
-    {
+    suspend fun getAllUsers(): List<UserItem> {
         return db.localUserDao().getAll()
     }
 }
