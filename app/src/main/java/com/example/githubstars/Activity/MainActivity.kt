@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupRecycler() {
-        recycler_users.adapter = RecyclerAPIUsersAdapter(userList)
+        recycler_users.adapter = RecyclerAPIUsersAdapter(userList.sortedBy { it.login })
         recycler_users.layoutManager = LinearLayoutManager(this)
     }
 
