@@ -41,10 +41,6 @@ class GithubStarsRepository @Inject constructor(private val db: LocalUserDatabas
         db.localUserDao().delete(userItem)
     }
 
-//    suspend fun getAllUsers(): List<UserItem> {
-//        return db.localUserDao().getAll()
-//    }
-
     fun getAllUserIdList() = flow {
         db.localUserDao().getAllUserIds().collect{
             emit(it)

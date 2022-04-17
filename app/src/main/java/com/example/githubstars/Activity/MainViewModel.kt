@@ -1,22 +1,16 @@
 package com.example.githubstars.Activity
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.githubstars.model.GithubStarsRepository
 import com.example.githubstars.model.dto.UserItem
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import retrofit2.Response
 import javax.inject.Inject
 
-class MainViewModel @Inject constructor() : ViewModel() {
-    @Inject
-    lateinit var repository: GithubStarsRepository
+class MainViewModel @Inject constructor(private val repository: GithubStarsRepository) :
+    ViewModel() {
     var userList = MutableLiveData<List<UserItem>>()
-    var userIdList: LiveData<List<Int>> = repository.getAllUserIdList()
+    var userIdList = repository.getAllUserIdList().asLiveData()
 
     fun setupUserList(word: String = "") {
         viewModelScope.launch {
