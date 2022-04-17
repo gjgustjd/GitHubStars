@@ -8,6 +8,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import com.example.githubstars.model.dto.UserItem
+import kotlinx.coroutines.flow.Flow
 
 
 @Dao
@@ -25,5 +26,5 @@ interface LocalUserDAO {
     fun getAll(): LiveData<List<UserItem>>
 
     @Query("SELECT id FROM users")
-    fun getAllUserIds(): LiveData<List<Int>>
+    fun getAllUserIds(): Flow<List<Int>>
 }

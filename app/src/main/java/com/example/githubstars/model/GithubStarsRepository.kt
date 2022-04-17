@@ -7,15 +7,16 @@ import com.example.githubstars.model.dto.UserItem
 import com.example.githubstars.model.local.LocalUserDatabase
 import com.google.gson.GsonBuilder
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Inject
+import javax.inject.Singleton
 
-class GithubStarsRepository @Inject constructor(@ApplicationContext context: Context) {
-
-    @Inject
-    lateinit var db: LocalUserDatabase
+@Singleton
+class GithubStarsRepository @Inject constructor(private val db: LocalUserDatabase) {
 
     suspend fun getUsersList(
         search_string: String = "d",
@@ -44,7 +45,9 @@ class GithubStarsRepository @Inject constructor(@ApplicationContext context: Con
 //        return db.localUserDao().getAll()
 //    }
 
-    fun getAllUserIdList(): LiveData<List<Int>> {
-        return db.localUserDao().getAllUserIds()
+    fun getAllUserIdList() = flow {
+        db.localUserDao().getAllUserIds().collect{
+            emit(it)
+        }
     }
 }
