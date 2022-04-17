@@ -1,17 +1,22 @@
 package com.example.githubstars.Activity
 
+import android.os.Build
 import android.os.Bundle
 import android.widget.EditText
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.githubstars.R
+import com.example.githubstars.common.UserItemDecorator
 import com.example.githubstars.databinding.ActivityMainBinding
 import com.example.githubstars.model.dto.UserItem
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
+@RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 class MainActivity : AppCompatActivity() {
 
     @Inject
@@ -59,6 +64,7 @@ class MainActivity : AppCompatActivity() {
     private fun setupRecycler() {
         recycler_users.adapter = RecyclerAPIUsersAdapter(userList.sortedBy { it.login })
         recycler_users.layoutManager = LinearLayoutManager(this)
+        recycler_users.addItemDecoration(UserItemDecorator(this))
     }
 
 }
