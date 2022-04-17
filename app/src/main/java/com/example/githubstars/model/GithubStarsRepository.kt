@@ -1,6 +1,7 @@
 package com.example.githubstars.model
 
 import android.content.Context
+import androidx.lifecycle.LiveData
 import com.example.githubstars.model.dto.SearchUserResponse
 import com.example.githubstars.model.dto.UserItem
 import com.example.githubstars.model.local.LocalUserDatabase
@@ -17,7 +18,7 @@ class GithubStarsRepository @Inject constructor(@ApplicationContext context: Con
     lateinit var db: LocalUserDatabase
 
     suspend fun getUsersList(
-        search_string: String="d",
+        search_string: String = "d",
         page: Int = 1,
         per_page: Int = 100
     ): Response<SearchUserResponse> {
@@ -39,7 +40,11 @@ class GithubStarsRepository @Inject constructor(@ApplicationContext context: Con
         db.localUserDao().delete(userItem)
     }
 
-    suspend fun getAllUsers(): List<UserItem> {
-        return db.localUserDao().getAll()
+//    suspend fun getAllUsers(): List<UserItem> {
+//        return db.localUserDao().getAll()
+//    }
+
+    fun getAllUserIdList(): LiveData<List<Int>> {
+        return db.localUserDao().getAllUserIds()
     }
 }

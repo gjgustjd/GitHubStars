@@ -1,15 +1,22 @@
 package com.example.githubstars.Activity
 
+import android.content.Context
 import android.opengl.Visibility
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.githubstars.R
 import com.example.githubstars.databinding.ItemListUserBinding
 import javax.inject.Inject
 import com.example.githubstars.model.dto.UserItem
 
-class RecyclerAPIUsersAdapter @Inject constructor(private val userList: List<UserItem>) :
+class RecyclerAPIUsersAdapter @Inject constructor(
+    private val context: Context,
+    private val userList: List<UserItem>,
+    private val viewModel: MainViewModel,
+    private val userIdList: List<Int>
+) :
     RecyclerView.Adapter<RecyclerAPIUsersAdapter.ViewHolder>() {
 
     private var currentHeader: Char = '.'
@@ -25,6 +32,7 @@ class RecyclerAPIUsersAdapter @Inject constructor(private val userList: List<Use
     }
 
     override fun getItemCount(): Int {
+
         return userList.size
     }
 
@@ -40,6 +48,15 @@ class RecyclerAPIUsersAdapter @Inject constructor(private val userList: List<Use
             } else {
                 binding.txtHeader.visibility = View.GONE
             }
+
+            binding.root.setOnClickListener {
+                viewModel.insertUser(userList[adapterPosition])
+            }
+
+            if (userIdList.contains(item.id))
+                binding.imgStar.setImageDrawable(context.resources.getDrawable(R.drawable.icon_star_colored))
+            else
+                binding.imgStar.setImageDrawable(context.resources.getDrawable(R.drawable.icon_star))
         }
     }
 }

@@ -23,18 +23,27 @@ class MainActivity : AppCompatActivity() {
     lateinit var viewModel: MainViewModel
     private lateinit var binding: ActivityMainBinding
     private lateinit var userList: List<UserItem>
+    private lateinit var userIdList: List<Int>
     private lateinit var recycler_users: RecyclerView
     private lateinit var edt_search: EditText
     private lateinit var btn_search: AppCompatButton
     private lateinit var btn_tab_api: AppCompatButton
     private lateinit var btn_tab_local: AppCompatButton
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setupLocalUserIdList()
         initializeView()
+    }
+
+    private fun setupLocalUserIdList() {
+        viewModel.userIdList.observe(this) {
+            userIdList = it
+        }
     }
 
     private fun initializeView() {
@@ -45,12 +54,12 @@ class MainActivity : AppCompatActivity() {
         initializeButtonSearch()
     }
 
-    private fun initializeButtonSearch()
-    {
+    private fun initializeButtonSearch() {
         btn_search = binding.btnSearch
-        btn_search.setOnClickListener{
-            if(edt_search.text.isBlank())
-                recycler_users.adapter = RecyclerAPIUsersAdapter(listOf())
+        btn_search.setOnClickListener {
+            if (edt_search.text.isBlank())
+                recycler_users.adapter =
+                    RecyclerAPIUsersAdapter(this, listOf(), viewModel, userIdList)
             else {
                 viewModel.setupUserList(edt_search.text.toString())
                 viewModel.userList.observe(this) {
@@ -62,7 +71,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupRecycler() {
-        recycler_users.adapter = RecyclerAPIUsersAdapter(userList.sortedBy { it.login })
+        recycler_users.adapter =
+            RecyclerAPIUsersAdapter(this, userList.sortedBy { it.login }, viewModel, userIdList)
         recycler_users.layoutManager = LinearLayoutManager(this)
         recycler_users.addItemDecoration(UserItemDecorator(this))
     }
