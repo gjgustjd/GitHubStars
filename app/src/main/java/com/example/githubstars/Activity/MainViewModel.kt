@@ -3,17 +3,19 @@ package com.example.githubstars.Activity
 import androidx.lifecycle.*
 import com.example.githubstars.model.GithubStarsRepository
 import com.example.githubstars.model.dto.UserItem
+import dagger.hilt.android.scopes.ActivityRetainedScoped
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@ActivityRetainedScoped
 class MainViewModel @Inject constructor(private val repository: GithubStarsRepository) :
     ViewModel() {
     var userList = MutableLiveData<List<UserItem>>()
     var localUserList = MutableLiveData<List<UserItem>>()
-    private var currentLocalWord = ""
     var userIdList = repository.getAllUserIdList().asLiveData()
+
+    private var currentLocalWord = ""
 
     fun setLocalTargetWord(word: String) {
         currentLocalWord = word

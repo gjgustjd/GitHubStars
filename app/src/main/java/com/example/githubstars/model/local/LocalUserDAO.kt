@@ -23,9 +23,6 @@ interface LocalUserDAO {
     @Delete
     fun delete(item: UserItem)
 
-    @Query("SELECT * FROM users")
-    fun getAll(): LiveData<List<UserItem>>
-
     @Query("SELECT id FROM users")
     fun getAllUserIds(): Flow<List<Int>>
 
