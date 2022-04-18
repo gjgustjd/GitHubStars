@@ -2,6 +2,7 @@ package com.example.githubstars.Activity
 
 import android.os.Build
 import android.os.Bundle
+import android.os.Parcelable
 import android.widget.EditText
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -29,6 +30,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var btn_tab_api: AppCompatButton
     private lateinit var btn_tab_local: AppCompatButton
     private lateinit var recyclerAdapter: RecyclerAPIUsersAdapter
+    private var recyclerViewState:Parcelable?=null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,6 +76,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupRecycler() {
         if (userList != null && userIdList != null) {
+            if(recycler_users.layoutManager!=null)
+                recyclerViewState = recycler_users.layoutManager?.onSaveInstanceState()!!
+
             recyclerAdapter =
                 RecyclerAPIUsersAdapter(
                     this,
@@ -83,6 +88,10 @@ class MainActivity : AppCompatActivity() {
                 )
             recycler_users.adapter = recyclerAdapter
             recycler_users.layoutManager = LinearLayoutManager(this)
+
+            if(recyclerViewState!=null)
+                recycler_users.layoutManager!!.onRestoreInstanceState(recyclerViewState)
+
             if (recycler_users.itemDecorationCount == 0)
                 recycler_users.addItemDecoration(UserItemDecorator(this))
         }
