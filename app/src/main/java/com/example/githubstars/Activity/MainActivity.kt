@@ -105,13 +105,15 @@ class MainActivity : AppCompatActivity() {
                 if (currentTab.equals(btn_tab_api)) {
                     viewModel.setupUserList(queryString)
                     viewModel.userList.observe(this) {
-                        setupRecycler(it)
+                        if (currentTab.equals(btn_tab_api))
+                            setupRecycler(it)
                     }
                 } else {
                     viewModel.setLocalTargetWord(queryString)
                     viewModel.localUserList.observe(this)
                     {
-                        setupRecycler(it)
+                        if (currentTab.equals(btn_tab_local))
+                            setupRecycler(it)
                     }
                 }
 
