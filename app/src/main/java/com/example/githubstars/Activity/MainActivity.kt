@@ -75,10 +75,16 @@ class MainActivity : AppCompatActivity() {
     private fun setupRecycler() {
         if (userList != null && userIdList != null) {
             recyclerAdapter =
-                RecyclerAPIUsersAdapter(this, userList!!.sortedBy { it.login }, viewModel, userIdList!!)
+                RecyclerAPIUsersAdapter(
+                    this,
+                    userList!!.sortedBy { it.login },
+                    viewModel,
+                    userIdList!!
+                )
             recycler_users.adapter = recyclerAdapter
             recycler_users.layoutManager = LinearLayoutManager(this)
-            recycler_users.addItemDecoration(UserItemDecorator(this))
+            if (recycler_users.itemDecorationCount == 0)
+                recycler_users.addItemDecoration(UserItemDecorator(this))
         }
     }
 
