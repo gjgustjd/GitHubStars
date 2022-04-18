@@ -6,8 +6,6 @@ import com.example.githubstars.model.dto.SearchUserResponse
 import com.example.githubstars.model.dto.UserItem
 import com.example.githubstars.model.local.LocalUserDatabase
 import com.google.gson.GsonBuilder
-import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -33,17 +31,24 @@ class GithubStarsRepository @Inject constructor(private val db: LocalUserDatabas
         return api.getUsers(search_string, page, per_page)
     }
 
-    suspend fun insertLocalUser(userItem: UserItem) {
+    fun insertLocalUser(userItem: UserItem) {
         db.localUserDao().insert(userItem)
     }
 
-    suspend fun deleteLocalUser(userItem: UserItem) {
+    fun deleteLocalUser(userItem: UserItem) {
         db.localUserDao().delete(userItem)
     }
 
     fun getAllUserIdList() = flow {
-        db.localUserDao().getAllUserIds().collect{
+        db.localUserDao().getAllUserIds().collect {
             emit(it)
         }
     }
+
+    fun getLocalUserList(word: String) = flow {
+        db.localUserDao().getLocalUserList("%${word}%").collect {
+            emit(it)
+        }
+    }
+
 }

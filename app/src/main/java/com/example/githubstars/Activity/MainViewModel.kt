@@ -4,13 +4,19 @@ import androidx.lifecycle.*
 import com.example.githubstars.model.GithubStarsRepository
 import com.example.githubstars.model.dto.UserItem
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MainViewModel @Inject constructor(private val repository: GithubStarsRepository) :
     ViewModel() {
     var userList = MutableLiveData<List<UserItem>>()
+    var localUserList = repository.getLocalUserList("").asLiveData()
     var userIdList = repository.getAllUserIdList().asLiveData()
+
+    fun setLocalTargetWord(word: String) {
+        localUserList = repository.getLocalUserList(word).asLiveData()
+    }
 
     fun setupUserList(word: String = "") {
         viewModelScope.launch {
@@ -26,6 +32,7 @@ class MainViewModel @Inject constructor(private val repository: GithubStarsRepos
             repository.insertLocalUser(userItem)
         }
     }
+
     fun deleteUser(userItem: UserItem) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteLocalUser(userItem)
