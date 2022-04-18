@@ -1,7 +1,6 @@
 package com.example.githubstars.Activity
 
 import android.content.Context
-import android.opengl.Visibility
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,13 +10,13 @@ import com.example.githubstars.databinding.ItemListUserBinding
 import javax.inject.Inject
 import com.example.githubstars.model.dto.UserItem
 
-class RecyclerAPIUsersAdapter @Inject constructor(
+class RecyclerUsersAdapter @Inject constructor(
     private val context: Context,
-    private val userList: List<UserItem>,
+    val userList: List<UserItem>,
     private val viewModel: MainViewModel,
     private val userIdList: List<Int>
 ) :
-    RecyclerView.Adapter<RecyclerAPIUsersAdapter.ViewHolder>() {
+    RecyclerView.Adapter<RecyclerUsersAdapter.ViewHolder>() {
 
     private var currentHeader: Char = '.'
 
@@ -27,14 +26,10 @@ class RecyclerAPIUsersAdapter @Inject constructor(
         return ViewHolder(itemListUserBinding)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) =
         holder.bind(userList[position])
-    }
 
-    override fun getItemCount(): Int {
-
-        return userList.size
-    }
+    override fun getItemCount() = userList.size
 
     inner class ViewHolder(val binding: ItemListUserBinding) :
         RecyclerView.ViewHolder(binding.root) {
