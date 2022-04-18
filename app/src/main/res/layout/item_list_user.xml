@@ -21,13 +21,17 @@
             android:layout_marginStart="20dp"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="20dp"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/img_userimage"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="40dp"
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
@@ -58,9 +62,9 @@
             android:layout_marginEnd="20dp"
             android:layout_marginRight="20dp"
             android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
             app:layout_constraintBottom_toBottomOf="@+id/img_userimage"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHeight_percent="0.3"
             app:layout_constraintTop_toTopOf="@+id/img_userimage"
             app:srcCompat="@drawable/icon_star" />
     </androidx.constraintlayout.widget.ConstraintLayout>
