@@ -50,7 +50,10 @@ class RecyclerAPIUsersAdapter @Inject constructor(
             }
 
             binding.root.setOnClickListener {
-                viewModel.insertUser(userList[adapterPosition])
+                if (userIdList.contains(item.id))
+                    viewModel.deleteUser(userList[adapterPosition])
+                else
+                    viewModel.insertUser(userList[adapterPosition])
             }
 
             if (userIdList.contains(item.id))

@@ -26,4 +26,9 @@ class MainViewModel @Inject constructor(private val repository: GithubStarsRepos
             repository.insertLocalUser(userItem)
         }
     }
+    fun deleteUser(userItem: UserItem) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteLocalUser(userItem)
+        }
+    }
 }
