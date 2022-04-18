@@ -1,3 +1,7 @@
+/*
+* MainActivity에 데이터를 제공하는 ViewModel 클래스입니다.
+* Repository 클래스로부터 데이터를 받아 Activity로 넘기는 역할을 합니다.
+* */
 package com.example.githubstars.Activity
 
 import androidx.lifecycle.*

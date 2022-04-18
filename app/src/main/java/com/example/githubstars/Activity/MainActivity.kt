@@ -1,3 +1,8 @@
+/*
+* 메인 액티비티 클래스입니다.
+* MainViewModel로부터 데이터를 관찰하여 Recycler를 업데이트하는 역할을 주로 담당합니다.
+* 선택된 탭에 따라 RecyclerUsersAdapter에 다른 데이터를 넣어 업데이트합니다.
+* */
 package com.example.githubstars.Activity
 
 import android.graphics.Color

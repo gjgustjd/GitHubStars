@@ -1,3 +1,7 @@
+/*
+* 사용자의 정보를 리스트의 형태로 표시하는 어댑터 클래스입니다.
+* 생성자로부터 받은 ViewModel을 조작하여 내부 DB에 삽입 삭제를 실행합니다.
+* */
 package com.example.githubstars.Activity
 
 import android.content.Context

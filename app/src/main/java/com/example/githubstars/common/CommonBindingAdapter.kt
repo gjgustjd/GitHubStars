@@ -1,13 +1,12 @@
+/*
+RecyclerUsersAdapter에 이미지를 로드하여 바인딩해주는 어댑터 클래스입니다.
+* */
 package com.example.githubstars.common
 
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import de.hdodenhof.circleimageview.CircleImageView
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
-import kotlin.coroutines.coroutineContext
 
 object CommonBindingAdapter{
 

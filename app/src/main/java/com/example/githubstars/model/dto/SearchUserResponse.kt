@@ -1,3 +1,6 @@
+/*
+GitHubAPI로부터 받은 데이터를 전달하기 위한 클래스입니다.
+* */
 package com.example.githubstars.model.dto
 
 data class SearchUserResponse(

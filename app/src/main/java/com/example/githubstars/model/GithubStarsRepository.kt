@@ -1,3 +1,7 @@
+/*
+* 외부 API로의 데이터 요청 및 내부 DB 연산을 주로 담당하는 Repository 클래스입니다.
+* */
+
 package com.example.githubstars.model
 
 import com.example.githubstars.model.dto.SearchUserResponse

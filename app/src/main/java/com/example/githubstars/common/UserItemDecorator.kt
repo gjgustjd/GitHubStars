@@ -1,6 +1,8 @@
+/*
+RecyclerUsersAdapter에 구분선을 추가할 용도의 ItemDecoration 클래스입니다.
+* */
 package com.example.githubstars.common
 
-import android.R
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Rect
