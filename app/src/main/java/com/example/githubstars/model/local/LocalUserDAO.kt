@@ -30,5 +30,5 @@ interface LocalUserDAO {
     fun getAllUserIds(): Flow<List<Int>>
 
     @Query("SELECT * FROM users WHERE login LIKE :word")
-    fun getLocalUserList(word: String): Flow<List<UserItem>>
+    suspend fun getLocalUserList(word: String): List<UserItem>
 }

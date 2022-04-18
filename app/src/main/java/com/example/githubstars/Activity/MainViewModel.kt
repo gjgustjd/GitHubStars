@@ -11,11 +11,16 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(private val repository: GithubStarsRepository) :
     ViewModel() {
     var userList = MutableLiveData<List<UserItem>>()
-    var localUserList = repository.getLocalUserList("").asLiveData()
+    var localUserList = MutableLiveData<List<UserItem>>()
+    private var currentLocalWord = ""
     var userIdList = repository.getAllUserIdList().asLiveData()
 
     fun setLocalTargetWord(word: String) {
-        localUserList = repository.getLocalUserList(word).asLiveData()
+        currentLocalWord = word
+        viewModelScope.launch {
+            var userList = repository.getLocalUserList(word).await()
+            localUserList.postValue(userList)
+        }
     }
 
     fun setupUserList(word: String = "") {
@@ -30,12 +35,14 @@ class MainViewModel @Inject constructor(private val repository: GithubStarsRepos
     fun insertUser(userItem: UserItem) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.insertLocalUser(userItem)
+            setLocalTargetWord(currentLocalWord)
         }
     }
 
     fun deleteUser(userItem: UserItem) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteLocalUser(userItem)
+            setLocalTargetWord(currentLocalWord)
         }
     }
 }

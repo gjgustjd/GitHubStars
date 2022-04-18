@@ -1,23 +1,23 @@
 package com.example.githubstars.model
 
-import android.content.Context
-import androidx.lifecycle.LiveData
 import com.example.githubstars.model.dto.SearchUserResponse
 import com.example.githubstars.model.dto.UserItem
 import com.example.githubstars.model.local.LocalUserDatabase
 import com.google.gson.GsonBuilder
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.flow
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.coroutines.coroutineContext
 
 @Singleton
 class GithubStarsRepository @Inject constructor(private val db: LocalUserDatabase) {
 
     suspend fun getUsersList(
-        search_string: String = "d",
+        search_string: String = "",
         page: Int = 1,
         per_page: Int = 100
     ): Response<SearchUserResponse> {
@@ -45,10 +45,9 @@ class GithubStarsRepository @Inject constructor(private val db: LocalUserDatabas
         }
     }
 
-    fun getLocalUserList(word: String) = flow {
-        db.localUserDao().getLocalUserList("%${word}%").collect {
-            emit(it)
+    fun getLocalUserList(word: String): Deferred<List<UserItem>> =
+        CoroutineScope(Dispatchers.IO).async {
+            db.localUserDao().getLocalUserList("%${word}%")
         }
-    }
 
 }
