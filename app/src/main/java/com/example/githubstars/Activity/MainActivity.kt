@@ -4,7 +4,6 @@ import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
-import android.os.WorkSource
 import android.widget.EditText
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -25,17 +24,16 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var viewModel: MainViewModel
     private lateinit var binding: ActivityMainBinding
-    private var userList: List<UserItem>? = null
+
     private var userIdList: List<Int>? = null
-    private var localUserList: List<UserItem>? = null
+    private var recyclerAdapter: RecyclerUsersAdapter? = null
+    private var recyclerViewState: Parcelable? = null
+    private lateinit var currentTab: AppCompatButton
     private lateinit var recycler_users: RecyclerView
     private lateinit var edt_search: EditText
     private lateinit var btn_search: AppCompatButton
     private lateinit var btn_tab_api: AppCompatButton
     private lateinit var btn_tab_local: AppCompatButton
-    private lateinit var recyclerAdapter: RecyclerAPIUsersAdapter
-    private var recyclerViewState: Parcelable? = null
-    private lateinit var currentTab:AppCompatButton
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,83 +49,83 @@ class MainActivity : AppCompatActivity() {
         viewModel.userIdList.observe(this)
         {
             userIdList = it
-            setupRecycler()
+            recyclerAdapter?.let {
+                setupRecycler(recyclerAdapter!!.userList)
+            }
         }
     }
 
     private fun initializeView() {
+        initializeBtnApi()
+        initializeBtnLocal()
+        initializeButtonSearch()
+
+        currentTab = btn_tab_api
         recycler_users = binding.recyclerItems
         edt_search = binding.edtSearch
+    }
+
+    private fun initializeBtnApi() {
         btn_tab_api = binding.btnTabApi
-        currentTab=btn_tab_api
         btn_tab_api.setOnClickListener {
-            if (!currentTab.equals(btn_tab_api)) {
-                currentTab = btn_tab_api
-                btn_tab_local.setBackgroundColor(Color.WHITE)
-                btn_tab_api.setBackgroundColor(resources.getColor(R.color.tabColor))
-                edt_search.text.clear()
-                recycler_users.adapter =
-                    RecyclerAPIUsersAdapter(this, listOf(), viewModel, userIdList!!)
-            }
+            setCurrentTab(btn_tab_api)
         }
+    }
+
+    private fun initializeBtnLocal() {
         btn_tab_local = binding.btnTabLocal
         btn_tab_local.setOnClickListener {
-            if (!currentTab.equals(btn_tab_local)) {
-                currentTab = btn_tab_local
-                btn_tab_api.setBackgroundColor(Color.WHITE)
-                btn_tab_local.setBackgroundColor(resources.getColor(R.color.tabColor))
-                edt_search.text.clear()
-                recycler_users.adapter =
-                    RecyclerAPIUsersAdapter(this, listOf(), viewModel, userIdList!!)
-            }
+            setCurrentTab(btn_tab_local)
         }
-        initializeButtonSearch()
+    }
+
+    private fun setCurrentTab(tab: AppCompatButton) {
+        if (!currentTab.equals(tab)) {
+            currentTab.setBackgroundColor(Color.WHITE)
+            tab.setBackgroundColor(resources.getColor(R.color.tabColor))
+            currentTab = tab
+            edt_search.text.clear()
+
+            setEmptyAdapter()
+        }
+    }
+
+    private fun setEmptyAdapter() {
+        recycler_users.adapter =
+            RecyclerUsersAdapter(this, listOf(), viewModel, userIdList!!)
     }
 
     private fun initializeButtonSearch() {
         btn_search = binding.btnSearch
         btn_search.setOnClickListener {
             if (edt_search.text.isBlank())
-                recycler_users.adapter =
-                    RecyclerAPIUsersAdapter(this, listOf(), viewModel, userIdList!!)
+                setEmptyAdapter()
             else {
+                val queryString = edt_search.text.toString()
                 if (currentTab.equals(btn_tab_api)) {
-                    viewModel.setupUserList(edt_search.text.toString())
+                    viewModel.setupUserList(queryString)
                     viewModel.userList.observe(this) {
-                        userList = it
-                        setupRecycler()
+                        setupRecycler(it)
                     }
                 } else {
-                    viewModel.setLocalTargetWord(edt_search.text.toString())
+                    viewModel.setLocalTargetWord(queryString)
                     viewModel.localUserList.observe(this)
                     {
-                        localUserList = it
-                        setupRecycler()
+                        setupRecycler(it)
                     }
                 }
+
             }
         }
     }
 
-    private fun setupRecycler() {
-        lateinit var source: List<UserItem>
-        if (currentTab.equals(btn_tab_api)) {
-            if (userList == null || userIdList == null)
-                return
-            else
-                source = userList!!
-        } else {
-            if (localUserList == null)
-                return
-            else
-                source = localUserList!!
+    private fun setupRecycler(source: List<UserItem>) {
+        recycler_users.layoutManager?.let {
+            recyclerViewState = recycler_users.layoutManager!!.onSaveInstanceState()
         }
 
-        if (recycler_users.layoutManager != null)
-            recyclerViewState = recycler_users.layoutManager?.onSaveInstanceState()!!
-
         recyclerAdapter =
-            RecyclerAPIUsersAdapter(
+            RecyclerUsersAdapter(
                 this,
                 source!!.sortedBy { it.login },
                 viewModel,
@@ -136,8 +134,9 @@ class MainActivity : AppCompatActivity() {
         recycler_users.adapter = recyclerAdapter
         recycler_users.layoutManager = LinearLayoutManager(this)
 
-        if (recyclerViewState != null)
+        recyclerViewState?.let {
             recycler_users.layoutManager!!.onRestoreInstanceState(recyclerViewState)
+        }
 
         if (recycler_users.itemDecorationCount == 0)
             recycler_users.addItemDecoration(UserItemDecorator(this))
