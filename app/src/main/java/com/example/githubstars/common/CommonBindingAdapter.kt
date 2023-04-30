@@ -8,7 +8,7 @@ import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 
-object CommonBindingAdapter{
+object CommonBindingAdapter {
 
     @BindingAdapter("app:imageUrl")
     @JvmStatic

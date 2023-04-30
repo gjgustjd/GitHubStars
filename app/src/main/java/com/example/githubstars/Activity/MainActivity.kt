@@ -37,8 +37,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var btn_tab_api: AppCompatButton
     private lateinit var btn_tab_local: AppCompatButton
 
+    private var decorator:UserItemDecorator? = null
+
     @Inject
-    lateinit var decorator:UserItemDecorator
+    fun setDecorator(decorator: UserItemDecorator) {
+       this.decorator = decorator
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,7 +88,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setCurrentTab(tab: AppCompatButton) {
-        if (!currentTab.equals(tab)) {
+        if (currentTab != tab) {
             currentTab.setBackgroundColor(Color.WHITE)
             tab.setBackgroundColor(resources.getColor(R.color.tabColor))
             currentTab = tab
@@ -106,17 +110,17 @@ class MainActivity : AppCompatActivity() {
                 setEmptyAdapter()
             else {
                 val queryString = edt_search.text.toString()
-                if (currentTab.equals(btn_tab_api)) {
+                if (currentTab == btn_tab_api) {
                     viewModel.setupUserList(queryString)
                     viewModel.userList.observe(this) {
-                        if (currentTab.equals(btn_tab_api))
+                        if (currentTab == btn_tab_api)
                             setupRecycler(it)
                     }
                 } else {
                     viewModel.setLocalTargetWord(queryString)
                     viewModel.localUserList.observe(this)
                     {
-                        if (currentTab.equals(btn_tab_local))
+                        if (currentTab == btn_tab_local)
                             setupRecycler(it)
                     }
                 }
@@ -145,7 +149,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         if (recycler_users.itemDecorationCount == 0)
-            recycler_users.addItemDecoration(decorator)
+            recycler_users.addItemDecoration(decorator!!)
     }
 
 }

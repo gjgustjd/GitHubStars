@@ -34,20 +34,20 @@ class RecyclerUsersAdapter constructor(
 
     override fun getItemCount() = userList.size
 
-    inner class ViewHolder(val binding: ItemListUserBinding) :
+    inner class ViewHolder(private val binding: ItemListUserBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: UserItem) {
-            binding.userData = item
+        fun bind(item: UserItem) = with(binding){
+            userData = item
 
-            if (!currentHeader.equals(item.login[0])) {
+            if (currentHeader != item.login[0]) {
                 currentHeader = item.login[0]
-                binding.txtHeader.text = currentHeader.toString()
-                binding.txtHeader.visibility = View.VISIBLE
+                txtHeader.text = currentHeader.toString()
+                txtHeader.visibility = View.VISIBLE
             } else {
-                binding.txtHeader.visibility = View.GONE
+                txtHeader.visibility = View.GONE
             }
 
-            binding.root.setOnClickListener {
+            root.setOnClickListener {
                 if (userIdList.contains(item.id))
                     viewModel.deleteUser(userList[adapterPosition])
                 else
@@ -55,9 +55,9 @@ class RecyclerUsersAdapter constructor(
             }
 
             if (userIdList.contains(item.id))
-                binding.imgStar.setImageDrawable(context.resources.getDrawable(R.drawable.icon_star_colored))
+                imgStar.setImageDrawable(context.resources.getDrawable(R.drawable.icon_star_colored))
             else
-                binding.imgStar.setImageDrawable(context.resources.getDrawable(R.drawable.icon_star))
+                imgStar.setImageDrawable(context.resources.getDrawable(R.drawable.icon_star))
         }
     }
 }
