@@ -7,29 +7,27 @@ package com.example.githubstars.model
 import com.example.githubstars.model.dto.SearchUserResponse
 import com.example.githubstars.model.dto.UserItem
 import com.example.githubstars.model.local.LocalUserDatabase
-import com.google.gson.GsonBuilder
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.flow
 import retrofit2.Response
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class GithubStarsRepository @Inject constructor(private val db: LocalUserDatabase) {
+class GithubStarsRepository @Inject constructor(
+    private val db: LocalUserDatabase,
+    private val retrofit: Retrofit
+) {
 
     suspend fun getUsersList(
         search_string: String = "",
         page: Int = 1,
         per_page: Int = 100
     ): Response<SearchUserResponse> {
-        val gson = GsonBuilder().setLenient().create()
-
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://api.github.com/")
-            .addConverterFactory(GsonConverterFactory.create(gson))
-            .build()
         val api = retrofit.create(SearchUsersAPI::class.java)
         return api.getUsers(search_string, page, per_page)
     }

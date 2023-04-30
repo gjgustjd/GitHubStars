@@ -131,7 +131,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupRecycler(source: List<UserItem>) {
         recycler_users.layoutManager?.let {
-            recyclerViewState = recycler_users.layoutManager!!.onSaveInstanceState()
+            recyclerViewState = it.onSaveInstanceState()
         }
 
         recyclerAdapter =
@@ -145,7 +145,7 @@ class MainActivity : AppCompatActivity() {
         recycler_users.layoutManager = LinearLayoutManager(this)
 
         recyclerViewState?.let {
-            recycler_users.layoutManager!!.onRestoreInstanceState(recyclerViewState)
+            recycler_users.layoutManager?.onRestoreInstanceState(recyclerViewState)
         }
 
         if (recycler_users.itemDecorationCount == 0)

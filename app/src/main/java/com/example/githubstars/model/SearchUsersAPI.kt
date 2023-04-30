@@ -3,7 +3,6 @@ package com.example.githubstars.model
 import com.example.githubstars.model.dto.SearchUserResponse
 import retrofit2.Response
 import retrofit2.http.GET
-import retrofit2.http.Header
 import retrofit2.http.Query
 
 interface SearchUsersAPI {

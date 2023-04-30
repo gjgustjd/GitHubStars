@@ -1,7 +1,5 @@
 package com.example.githubstars.model.local
 
-import androidx.annotation.WorkerThread
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -9,8 +7,6 @@ import androidx.room.Query
 import androidx.room.Update
 import com.example.githubstars.model.dto.UserItem
 import kotlinx.coroutines.flow.Flow
-import org.jetbrains.annotations.NotNull
-
 
 @Dao
 interface LocalUserDAO {

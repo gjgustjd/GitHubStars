@@ -13,7 +13,7 @@ import dagger.hilt.android.qualifiers.ActivityContext
 
 class UserItemDecorator constructor(@ActivityContext private val context: Context) :
     RecyclerView.ItemDecoration() {
-    var mDivider: Drawable? = null
+    private var mDivider: Drawable? = null
 
     init {
         mDivider = context.getDrawable(com.example.githubstars.R.drawable.line_divider)
@@ -38,9 +38,11 @@ class UserItemDecorator constructor(@ActivityContext private val context: Contex
             val child: View = parent.getChildAt(i)
             val params = child.layoutParams as RecyclerView.LayoutParams
             val top: Int = child.bottom + params.bottomMargin
-            val bottom = top + mDivider!!.intrinsicHeight
-            mDivider!!.setBounds(left, top, right, bottom)
-            mDivider!!.draw(c)
+            mDivider?.let {
+                val bottom = top + it.intrinsicHeight
+                it.setBounds(left, top, right, bottom)
+                it.draw(c)
+            }
         }
     }
 }

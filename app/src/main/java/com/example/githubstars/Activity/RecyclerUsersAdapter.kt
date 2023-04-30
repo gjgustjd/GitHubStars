@@ -48,16 +48,21 @@ class RecyclerUsersAdapter constructor(
             }
 
             root.setOnClickListener {
+                val position = userList[adapterPosition]
+
                 if (userIdList.contains(item.id))
-                    viewModel.deleteUser(userList[adapterPosition])
+                    viewModel.deleteUser(position)
                 else
-                    viewModel.insertUser(userList[adapterPosition])
+                    viewModel.insertUser(position)
             }
 
-            if (userIdList.contains(item.id))
-                imgStar.setImageDrawable(context.resources.getDrawable(R.drawable.icon_star_colored))
-            else
-                imgStar.setImageDrawable(context.resources.getDrawable(R.drawable.icon_star))
+            val drawable =
+                if (userIdList.contains(item.id))
+                    R.drawable.icon_star_colored
+                else
+                    R.drawable.icon_star
+
+            imgStar.setImageDrawable(context.resources.getDrawable(drawable))
         }
     }
 }
