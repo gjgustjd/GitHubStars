@@ -7,12 +7,12 @@ package com.example.githubstars.Activity
 import androidx.lifecycle.*
 import com.example.githubstars.model.GithubStarsRepository
 import com.example.githubstars.model.dto.UserItem
-import dagger.hilt.android.scopes.ActivityRetainedScoped
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@ActivityRetainedScoped
+@HiltViewModel
 class MainViewModel @Inject constructor(private val repository: GithubStarsRepository) :
     ViewModel() {
     var userList = MutableLiveData<List<UserItem>>()

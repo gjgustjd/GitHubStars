@@ -6,11 +6,10 @@
 package com.example.githubstars.Activity
 
 import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
 import android.widget.EditText
-import androidx.annotation.RequiresApi
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,11 +22,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-@RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 class MainActivity : AppCompatActivity() {
 
-    @Inject
-    lateinit var viewModel: MainViewModel
+    val viewModel: MainViewModel by viewModels()
     private lateinit var binding: ActivityMainBinding
 
     private var userIdList: List<Int>? = null
@@ -134,7 +131,7 @@ class MainActivity : AppCompatActivity() {
         recyclerAdapter =
             RecyclerUsersAdapter(
                 this,
-                source!!.sortedBy { it.login },
+                source.sortedBy { it.login },
                 viewModel,
                 userIdList!!
             )
