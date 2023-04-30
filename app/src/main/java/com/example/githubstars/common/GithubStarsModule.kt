@@ -9,6 +9,8 @@ import com.example.githubstars.model.local.LocalUserDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ActivityComponent
+import dagger.hilt.android.qualifiers.ActivityContext
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
@@ -23,3 +25,13 @@ class GithubStarsModule {
         Room.databaseBuilder(context, LocalUserDatabase::class.java, "user-db")
             .fallbackToDestructiveMigration().build()
 }
+
+@Module
+@InstallIn(ActivityComponent::class)
+class ActivityModule {
+
+    @Provides
+    fun getItemDecorator(@ActivityContext context: Context): UserItemDecorator =
+        UserItemDecorator(context)
+}
+

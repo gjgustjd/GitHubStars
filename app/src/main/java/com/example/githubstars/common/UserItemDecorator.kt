@@ -7,15 +7,11 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
-import android.os.Build
 import android.view.View
-import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
-import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.android.qualifiers.ActivityContext
 
-
-@RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-class UserItemDecorator constructor(@ApplicationContext private val context: Context) :
+class UserItemDecorator constructor(@ActivityContext private val context: Context) :
     RecyclerView.ItemDecoration() {
     var mDivider: Drawable? = null
 
@@ -40,8 +36,8 @@ class UserItemDecorator constructor(@ApplicationContext private val context: Con
         val childCount = parent.childCount
         for (i in 0 until childCount) {
             val child: View = parent.getChildAt(i)
-            val params = child.getLayoutParams() as RecyclerView.LayoutParams
-            val top: Int = child.getBottom() + params.bottomMargin
+            val params = child.layoutParams as RecyclerView.LayoutParams
+            val top: Int = child.bottom + params.bottomMargin
             val bottom = top + mDivider!!.intrinsicHeight
             mDivider!!.setBounds(left, top, right, bottom)
             mDivider!!.draw(c)

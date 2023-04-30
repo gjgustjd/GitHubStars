@@ -24,7 +24,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    val viewModel: MainViewModel by viewModels()
+    private val viewModel: MainViewModel by viewModels()
     private lateinit var binding: ActivityMainBinding
 
     private var userIdList: List<Int>? = null
@@ -37,6 +37,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var btn_tab_api: AppCompatButton
     private lateinit var btn_tab_local: AppCompatButton
 
+    @Inject
+    lateinit var decorator:UserItemDecorator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -143,7 +145,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         if (recycler_users.itemDecorationCount == 0)
-            recycler_users.addItemDecoration(UserItemDecorator(this))
+            recycler_users.addItemDecoration(decorator)
     }
 
 }

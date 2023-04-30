@@ -11,10 +11,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.githubstars.R
 import com.example.githubstars.databinding.ItemListUserBinding
-import javax.inject.Inject
 import com.example.githubstars.model.dto.UserItem
 
-class RecyclerUsersAdapter @Inject constructor(
+class RecyclerUsersAdapter constructor(
     private val context: Context,
     val userList: List<UserItem>,
     private val viewModel: MainViewModel,
@@ -25,8 +24,8 @@ class RecyclerUsersAdapter @Inject constructor(
     private var currentHeader: Char = '.'
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        var inflater = LayoutInflater.from(parent.context)
-        var itemListUserBinding = ItemListUserBinding.inflate(inflater, parent, false)
+        val inflater = LayoutInflater.from(parent.context)
+        val itemListUserBinding = ItemListUserBinding.inflate(inflater, parent, false)
         return ViewHolder(itemListUserBinding)
     }
 

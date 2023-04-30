@@ -24,14 +24,14 @@ class MainViewModel @Inject constructor(private val repository: GithubStarsRepos
     fun setLocalTargetWord(word: String) {
         currentLocalWord = word
         viewModelScope.launch {
-            var userList = repository.getLocalUserList(word).await()
+            val userList = repository.getLocalUserList(word).await()
             localUserList.postValue(userList)
         }
     }
 
     fun setupUserList(word: String = "") {
         viewModelScope.launch {
-            var response = repository.getUsersList(search_string = word)
+            val response = repository.getUsersList(search_string = word)
             if (response.isSuccessful) {
                 userList.value = response.body()!!.items
             }
